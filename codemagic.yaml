@@ -2,7 +2,6 @@ workflows:
   android-apk:
     name: 4M Engineering Cloud - Android APK
     max_build_duration: 60
-    instance_type: linux_x2
     environment:
       node: 22
       java: 21
@@ -37,23 +36,20 @@ workflows:
           npx cap sync android
       - name: Configure Android SDK and Gradle permissions
         script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+          SDK_PATH="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/Library/Android/sdk}}"
+          echo "sdk.dir=$SDK_PATH" > "$CM_BUILD_DIR/android/local.properties"
           chmod +x "$CM_BUILD_DIR/android/gradlew"
-          if [ -x "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
-            yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
+          if [ -x "$SDK_PATH/cmdline-tools/latest/bin/sdkmanager" ]; then
+            yes | "$SDK_PATH/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
           fi
       - name: Build installable Android APK
         script: |
           cd "$CM_BUILD_DIR/android"
           ./gradlew assembleDebug
           if [ -n "${FCI_KEYSTORE:-}" ]; then
-            echo "$FCI_KEYSTORE" | base64 --decode > /tmp/release.keystore
-            cat <<EOF > "$CM_BUILD_DIR/android/key.properties"
-          storePassword=$FCI_KEYSTORE_PASSWORD
-          keyPassword=$FCI_KEY_PASSWORD
-          keyAlias=$FCI_KEY_ALIAS
-          storeFile=/tmp/release.keystore
-          EOF
+            (echo "$FCI_KEYSTORE" | base64 -D > /tmp/release.keystore 2>/dev/null) || (echo "$FCI_KEYSTORE" | base64 --decode > /tmp/release.keystore)
+            printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=/tmp/release.keystore\n" \
+              "$FCI_KEYSTORE_PASSWORD" "$FCI_KEY_PASSWORD" "$FCI_KEY_ALIAS" > "$CM_BUILD_DIR/android/key.properties"
             ./gradlew assembleRelease
           fi
     artifacts:
@@ -69,7 +65,6 @@ workflows:
   android-play-release:
     name: 4M Engineering Cloud - Play Store AAB & Signed APK
     max_build_duration: 60
-    instance_type: linux_x2
     environment:
       groups:
         - keystore_credentials
@@ -96,15 +91,12 @@ workflows:
           npx cap sync android
       - name: Configure Android SDK and Keystore
         script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+          SDK_PATH="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/Library/Android/sdk}}"
+          echo "sdk.dir=$SDK_PATH" > "$CM_BUILD_DIR/android/local.properties"
           chmod +x "$CM_BUILD_DIR/android/gradlew"
-          echo "$CM_KEYSTORE" | base64 --decode > /tmp/keystore.jks
-          cat <<EOF > "$CM_BUILD_DIR/android/key.properties"
-          storePassword=$CM_KEYSTORE_PASSWORD
-          keyPassword=$CM_KEY_PASSWORD
-          keyAlias=$CM_KEY_ALIAS
-          storeFile=/tmp/keystore.jks
-          EOF
+          (echo "$CM_KEYSTORE" | base64 -D > /tmp/keystore.jks 2>/dev/null) || (echo "$CM_KEYSTORE" | base64 --decode > /tmp/keystore.jks)
+          printf "storePassword=%s\nkeyPassword=%s\nkeyAlias=%s\nstoreFile=/tmp/keystore.jks\n" \
+            "$CM_KEYSTORE_PASSWORD" "$CM_KEY_PASSWORD" "$CM_KEY_ALIAS" > "$CM_BUILD_DIR/android/key.properties"
       - name: Build Release AAB and APK
         script: |
           cd "$CM_BUILD_DIR/android"
