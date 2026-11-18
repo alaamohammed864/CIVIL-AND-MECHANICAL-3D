@@ -1,0 +1,84 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --cad-canvas: #eef2f6;
+    --cad-chassis: #f8fafc;
+    --cad-panel: #ffffff;
+    --cad-panel-elevated: #e2e8f0;
+    --cad-border: #cbd5e1;
+    --cad-border-strong: #94a3b8;
+    --cad-text: #0f172a;
+    --cad-text-muted: #475569;
+    --cad-accent: #0284c7;
+    --cad-amber: #d97706;
+    --cad-green: #059669;
+    --cad-red: #dc2626;
+  }
+
+  .dark {
+    --cad-canvas: #0b1118;
+    --cad-chassis: #111a24;
+    --cad-panel: #17202b;
+    --cad-panel-elevated: #222b35;
+    --cad-border: #1e2b3d;
+    --cad-border-strong: #2c3f58;
+    --cad-text: #dae3f1;
+    --cad-text-muted: #8b9cb2;
+    --cad-accent: #00d2ff;
+    --cad-amber: #ff9f1c;
+    --cad-green: #10b981;
+    --cad-red: #ef4444;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Plus Jakarta Sans", "Cairo", system-ui, -apple-system, sans-serif;
+    background-color: var(--cad-canvas);
+    color: var(--cad-text);
+  }
+}
+
+.font-display {
+  font-family: "Space Grotesk", "Cairo", sans-serif;
+}
+
+.font-mono-tech {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chiseled industrial corner notch */
+.chamfer-btn {
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+
+/* Subtle engineering scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 156, 178, 0.28);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 210, 255, 0.45);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

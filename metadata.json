@@ -1,0 +1,6 @@
+{
+  "name": "4M ENGINEERING CLOUD",
+  "description": "Professional Web-Based CAD, BIM, MEP, Engineering & Energy Design Platform",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
