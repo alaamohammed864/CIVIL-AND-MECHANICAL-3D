@@ -41,6 +41,7 @@ import {
   LibraryModal,
   NewProjectModal,
 } from './components/Modals';
+import { OfflineIndicator, PWAInstallButton } from './components/PWAInstall';
 import {
   BarChart3,
   Box,
@@ -732,6 +733,7 @@ export default function App() {
           >
             <Save className="w-3.5 h-3.5" /> Save
           </button>
+          <PWAInstallButton variant="header" />
           <button
             type="button"
             onClick={() => setActiveSheet((s) => (s === 'menu' ? 'none' : 'menu'))}
@@ -1361,6 +1363,7 @@ export default function App() {
 
             {activeSheet === 'menu' && (
               <div className="p-4 space-y-3 overflow-y-auto">
+                <PWAInstallButton variant="menu" />
                 <div className="grid grid-cols-2 gap-2.5">
                   <button
                     type="button"
@@ -1484,6 +1487,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <OfflineIndicator />
 
       {/* Toast Feedback */}
       {toast && (
