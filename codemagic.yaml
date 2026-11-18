@@ -24,7 +24,7 @@ workflows:
     scripts:
       - name: Install Node dependencies
         script: |
-          npm install
+          npm install --no-audit --no-fund || npm install --no-audit --no-fund --legacy-peer-deps
       - name: Build Web CAD/BIM bundle
         script: |
           npm run build
@@ -39,8 +39,9 @@ workflows:
           SDK_PATH="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/Library/Android/sdk}}"
           echo "sdk.dir=$SDK_PATH" > "$CM_BUILD_DIR/android/local.properties"
           chmod +x "$CM_BUILD_DIR/android/gradlew"
-          if [ -x "$SDK_PATH/cmdline-tools/latest/bin/sdkmanager" ]; then
-            yes | "$SDK_PATH/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
+          SDKMANAGER=$(command -v sdkmanager || echo "$SDK_PATH/cmdline-tools/latest/bin/sdkmanager")
+          if [ -x "$SDKMANAGER" ]; then
+            yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
           fi
       - name: Build installable Android APK
         script: |
@@ -79,7 +80,7 @@ workflows:
     scripts:
       - name: Install Node dependencies
         script: |
-          npm install
+          npm install --no-audit --no-fund || npm install --no-audit --no-fund --legacy-peer-deps
       - name: Build Web CAD/BIM bundle
         script: |
           npm run build
