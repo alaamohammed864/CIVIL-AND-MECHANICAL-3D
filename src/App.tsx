@@ -42,6 +42,7 @@ import {
   NewProjectModal,
 } from './components/Modals';
 import { OfflineIndicator, PWAInstallButton } from './components/PWAInstall';
+import { SplashScreen } from './components/SplashScreen';
 import {
   BarChart3,
   Box,
@@ -179,6 +180,7 @@ export default function App() {
   const [redoStack, setRedoStack] = useState<BIMProject[]>([]);
 
   // Modals, mobile bottom sheets & notifications
+  const [showSplash, setShowSplash] = useState(true);
   const [showWizard, setShowWizard] = useState(false);
   const [showLibrary, setShowLibrary] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
@@ -624,6 +626,7 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden bg-[#0b1118] dark:bg-[#0b1118] bg-slate-100 text-[#dae3f1] dark:text-[#dae3f1] text-slate-900">
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
       {/* Hidden DXF / JSON Import File Input */}
       <input
         ref={dxfInputRef}
@@ -648,15 +651,17 @@ export default function App() {
           </button>
 
           <div className="flex items-center gap-2 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-[#00d2ff] text-[#0b1118] font-display font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
-              4M
-            </div>
+            <img
+              src="/assets/aistudio/file_00000000aab48211b10c0f662c6d35c8_7abda86e.png"
+              alt="4M Engineering Cloud Icon"
+              className="w-8 h-8 rounded-xl object-cover border border-[#2c3f58] shrink-0 shadow-sm"
+            />
             <div className="min-w-0">
               <div className="font-display font-bold text-sm tracking-tight truncate max-w-[155px] sm:max-w-[240px]">
                 {project.branding.platformTitle}
               </div>
-              <div className="hidden sm:block text-[10px] text-[#8b9cb2] truncate max-w-[240px]">
-                {project.name}
+              <div className="text-[10px] text-[#00d2ff] font-medium truncate max-w-[155px] sm:max-w-[240px]">
+                ENG ALAA MOHAMMED
               </div>
             </div>
           </div>
@@ -1482,6 +1487,11 @@ export default function App() {
                   </span>
                   <span className="font-mono-tech text-[11px] text-[#69f6b9]">{peerCount} active</span>
                 </button>
+
+                <div className="pt-2 border-t border-[#1e2b3d] dark:border-[#1e2b3d] border-slate-200 flex items-center justify-between text-[11px] font-mono-tech text-[#8b9cb2]">
+                  <span>Developer</span>
+                  <span className="text-[#00d2ff] font-semibold">ENG ALAA MOHAMMED</span>
+                </div>
               </div>
             )}
           </div>

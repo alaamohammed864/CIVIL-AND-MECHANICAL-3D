@@ -999,7 +999,7 @@ export function createSeedProject(projectType: ProjectType = 'Oil & Gas Facility
       organizationName: '4M Engineering Operations',
       platformTitle: '4M ENGINEERING CLOUD',
       accentColor: '#00d2ff',
-      designerName: 'Eng. Tariq Al-Mansoor',
+      designerName: 'ENG ALAA MOHAMMED',
       checkerName: 'Dr. Nadia Kareem, PE',
       approverName: 'M. Hassan, PMP',
     },

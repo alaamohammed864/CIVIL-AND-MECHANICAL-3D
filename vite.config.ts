@@ -13,12 +13,19 @@ export default defineConfig(() => {
       VitePWA({
         registerType: 'autoUpdate',
         useCredentials: true,
-        includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png', 'pwa-maskable-512x512.png'],
+        includeAssets: [
+          'apple-touch-icon.png',
+          'pwa-192x192.png',
+          'pwa-512x512.png',
+          'pwa-maskable-512x512.png',
+          'assets/aistudio/file_00000000aab48211b10c0f662c6d35c8_7abda86e.png',
+          'assets/aistudio/______bcb28203.png',
+        ],
         manifest: {
           id: '/',
           name: '4M ENGINEERING CLOUD',
           short_name: '4M Cloud',
-          description: 'Mobile & Web CAD, BIM, MEP, Engineering & Energy Design Suite.',
+          description: 'Mobile CAD, BIM, MEP, Engineering & Energy Suite by ENG ALAA MOHAMMED.',
           theme_color: '#0b1118',
           background_color: '#0b1118',
           display: 'standalone',
@@ -46,7 +53,7 @@ export default defineConfig(() => {
           ],
         },
         workbox: {
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+          maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
           globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
           runtimeCaching: [
             {
